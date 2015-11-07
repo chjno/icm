@@ -45,7 +45,7 @@ function begin() {
     '/definitions?limit=10&includeRelated=false&useCanonical=true' +
     '&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5';
 
-  var apiKey = "AIzaSyD8W_uSRe96JC0D1llyrr06mwUySlV7s7k";
+  var apiKey = "AIzaSyCanAOR0K9wSbVJhWg7wlED2-5ysBUevTU";
   var urlImage = "https://www.googleapis.com/customsearch/v1?key=" + apiKey + "&searchType=image" +
     // The number below comes from https://cse.google.com/cse/manage/all
     "&cx=017113430126644414771:wwhvz3sxr2q" +
