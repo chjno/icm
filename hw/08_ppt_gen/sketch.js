@@ -9,16 +9,21 @@ var defPrint = true;
 var defDiv;
 var mood;
 var rand;
+var moods = [];
+var apiKey;
+var wordnikKey;
+var previousSlide
+var nextSlide
 
 function setup() {
   inputName = createInput('Your name');
   inputWord = createInput('Your favorite thing');
   var button = createButton('Begin');
   button.mousePressed(begin);
-  var previousSlide = createButton('Previous');
+  previousSlide = createButton('Previous');
   previousSlide.mousePressed(goBack);
   previousSlide.hide();
-  var nextSlide = createButton('Next');
+  nextSlide = createButton('Next');
   nextSlide.mousePressed(advance);
   nextSlide.hide();
 
@@ -32,6 +37,8 @@ function setup() {
 function preload() {
   template = loadImage('media/template.png');
   // typewriter = loadSound('media/typewriter.wav');
+  loadJSON('moods.json', gotMoods);
+  loadJSON('creds.json', gotKeys);
 }
 
 function begin() {
@@ -39,13 +46,14 @@ function begin() {
   defPrint = true;
   defDiv.hide();
   image1.hide();
+  previousSlide.show();
+  nextSlide.show();
   yourName = inputName.value();
   yourWord = inputWord.value();
   var urlDef = 'http://api.wordnik.com:80/v4/word.json/' + yourWord + 
     '/definitions?limit=10&includeRelated=false&useCanonical=true' +
-    '&includeTags=false&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5';
+    '&includeTags=false&api_key=' + wordnikKey;
 
-  var apiKey = "AIzaSyCanAOR0K9wSbVJhWg7wlED2-5ysBUevTU";
   var urlImage = "https://www.googleapis.com/customsearch/v1?key=" + apiKey + "&searchType=image" +
     // The number below comes from https://cse.google.com/cse/manage/all
     "&cx=017113430126644414771:wwhvz3sxr2q" +
@@ -53,7 +61,7 @@ function begin() {
 
   loadJSON(urlDef, gotDef);
   loadJSON(urlImage, gotImage);
-  loadJSON('moods.json', gotMoods);
+  mood = moods[round(random(0, moods.length))];
   // println(urlImage);
 }
 
@@ -89,8 +97,13 @@ function gotMoods(data) {
   // println(data.moods[0]);
   // rand = data.moods.length.round;
   // println(round(random(0, data.moods.length)));
-  mood = data.moods[round(random(0, data.moods.length))];
+  moods = data.moods;
   // println(mood);
+}
+
+function gotKeys(data){
+  apiKey = data.googKey;
+  wordnikKey = data.wordnikKey;
 }
 
 function goBack() {
